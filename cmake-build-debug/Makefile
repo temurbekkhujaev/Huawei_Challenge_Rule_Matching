@@ -142,6 +142,19 @@ BF/fast:
 .PHONY : BF/fast
 
 #=============================================================================
+# Target rules for targets named AbdurasulAka
+
+# Build rule for target.
+AbdurasulAka: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 AbdurasulAka
+.PHONY : AbdurasulAka
+
+# fast build rule for target.
+AbdurasulAka/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\AbdurasulAka.dir\build.make CMakeFiles/AbdurasulAka.dir/build
+.PHONY : AbdurasulAka/fast
+
+#=============================================================================
 # Target rules for targets named Check
 
 # Build rule for target.
@@ -153,6 +166,30 @@ Check: cmake_check_build_system
 Check/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Check.dir\build.make CMakeFiles/Check.dir/build
 .PHONY : Check/fast
+
+Abdurasul_aka.obj: Abdurasul_aka.cpp.obj
+.PHONY : Abdurasul_aka.obj
+
+# target to build an object file
+Abdurasul_aka.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\AbdurasulAka.dir\build.make CMakeFiles/AbdurasulAka.dir/Abdurasul_aka.cpp.obj
+.PHONY : Abdurasul_aka.cpp.obj
+
+Abdurasul_aka.i: Abdurasul_aka.cpp.i
+.PHONY : Abdurasul_aka.i
+
+# target to preprocess a source file
+Abdurasul_aka.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\AbdurasulAka.dir\build.make CMakeFiles/AbdurasulAka.dir/Abdurasul_aka.cpp.i
+.PHONY : Abdurasul_aka.cpp.i
+
+Abdurasul_aka.s: Abdurasul_aka.cpp.s
+.PHONY : Abdurasul_aka.s
+
+# target to generate assembly for a file
+Abdurasul_aka.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\AbdurasulAka.dir\build.make CMakeFiles/AbdurasulAka.dir/Abdurasul_aka.cpp.s
+.PHONY : Abdurasul_aka.cpp.s
 
 brute_force.obj: brute_force.cpp.obj
 .PHONY : brute_force.obj
@@ -234,9 +271,13 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... AbdurasulAka
 	@echo ... BF
 	@echo ... Check
 	@echo ... Main
+	@echo ... Abdurasul_aka.obj
+	@echo ... Abdurasul_aka.i
+	@echo ... Abdurasul_aka.s
 	@echo ... brute_force.obj
 	@echo ... brute_force.i
 	@echo ... brute_force.s

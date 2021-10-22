@@ -64,6 +64,7 @@ CMAKE_BINARY_DIR = C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-bui
 # The main recursive "all" target.
 all: CMakeFiles/Main.dir/all
 all: CMakeFiles/BF.dir/all
+all: CMakeFiles/AbdurasulAka.dir/all
 all: CMakeFiles/Check.dir/all
 .PHONY : all
 
@@ -74,6 +75,7 @@ preinstall:
 # The main recursive "clean" target.
 clean: CMakeFiles/Main.dir/clean
 clean: CMakeFiles/BF.dir/clean
+clean: CMakeFiles/AbdurasulAka.dir/clean
 clean: CMakeFiles/Check.dir/clean
 .PHONY : clean
 
@@ -84,7 +86,7 @@ clean: CMakeFiles/Check.dir/clean
 CMakeFiles/Main.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Main.dir\build.make CMakeFiles/Main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles --progress-num=5,6 "Built target Main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles --progress-num=7,8 "Built target Main"
 .PHONY : CMakeFiles/Main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -110,7 +112,7 @@ CMakeFiles/Main.dir/clean:
 CMakeFiles/BF.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BF.dir\build.make CMakeFiles/BF.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BF.dir\build.make CMakeFiles/BF.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target BF"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles --progress-num=3,4 "Built target BF"
 .PHONY : CMakeFiles/BF.dir/all
 
 # Build rule for subdir invocation for target.
@@ -130,13 +132,39 @@ CMakeFiles/BF.dir/clean:
 .PHONY : CMakeFiles/BF.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/AbdurasulAka.dir
+
+# All Build rule for target.
+CMakeFiles/AbdurasulAka.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\AbdurasulAka.dir\build.make CMakeFiles/AbdurasulAka.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\AbdurasulAka.dir\build.make CMakeFiles/AbdurasulAka.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target AbdurasulAka"
+.PHONY : CMakeFiles/AbdurasulAka.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/AbdurasulAka.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/AbdurasulAka.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles 0
+.PHONY : CMakeFiles/AbdurasulAka.dir/rule
+
+# Convenience name for target.
+AbdurasulAka: CMakeFiles/AbdurasulAka.dir/rule
+.PHONY : AbdurasulAka
+
+# clean rule for target.
+CMakeFiles/AbdurasulAka.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\AbdurasulAka.dir\build.make CMakeFiles/AbdurasulAka.dir/clean
+.PHONY : CMakeFiles/AbdurasulAka.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/Check.dir
 
 # All Build rule for target.
 CMakeFiles/Check.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Check.dir\build.make CMakeFiles/Check.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Check.dir\build.make CMakeFiles/Check.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles --progress-num=3,4 "Built target Check"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\temur\repos\Huawei-Challenge-Rule-Matching\cmake-build-debug\CMakeFiles --progress-num=5,6 "Built target Check"
 .PHONY : CMakeFiles/Check.dir/all
 
 # Build rule for subdir invocation for target.
