@@ -114,9 +114,9 @@ void solve() {
             }
         }
     }
-//    print_key(keys[0]);
-//    print_rule(rules[64245]);
-//    print_rule(rules[89086]);
+    print_key(keys[0]);
+    print_rule(rules[60655]);
+    print_rule(rules[89086]);
 //    return;
     int now = 0;
     for (const auto &key: keys)
@@ -138,9 +138,9 @@ void solve() {
 
 int main() {
     ios_base::sync_with_stdio(false);
-#ifdef QWERTY
+#ifdef LOCAL
     freopen("input_test.txt", "r", stdin);
-    freopen("output_test.txt", "w", stdout);
+//    freopen("output_test.txt", "w", stdout);
 #else
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
