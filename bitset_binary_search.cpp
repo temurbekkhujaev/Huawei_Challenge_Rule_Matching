@@ -1,8 +1,8 @@
 //
 // Created by temur on 10/22/2021.
-// SC= 22.4kk Mem =9mb Time=531ms
+//
 
-#pragma GCC optimize("Ofast")
+//#pragma GCC optimize("Ofast")
 
 #include <bits/stdc++.h>
 
@@ -18,20 +18,13 @@ const int MAX_RULES = 150000;
 const int MAX_KEYS = 15000;
 const int MAX_DIM = 5;
 int R, K, D; //Rules Keys Dimension
-
-
+#define keys ksdljg
 pair<unsigned int, int> keys[MAX_DIM][MAX_KEYS];
 pair<unsigned int, unsigned int> rules[MAX_DIM][MAX_RULES];
-unsigned int keys_orig[MAX_DIM][MAX_KEYS];
 int result[MAX_KEYS];
 
-bool rule_match(int rule_id, int key_id) {
-    for (int i = 0; i < D; i++) {
-        if (rules[i][rule_id].first > keys_orig[i][key_id] || rules[i][rule_id].second < keys_orig[i][key_id])
-            return false;
-    }
-    return true;
-}
+bitset<MAX_KEYS> unmatched, mask;
+bitset<MAX_KEYS> dp[MAX_DIM][MAX_KEYS + 5];
 
 void solve() {
 
@@ -78,8 +71,8 @@ void solve() {
                 rules[i][id] = {minx, maxx};
             } else {
                 int m = str.find('-');
-
-                auto f = make_pair((unsigned int) stoi(str.substr(0, m)), (unsigned int) stoi(str.substr(m + 1)));
+                assert(m != -1);
+                auto f = make_pair((unsigned int)stoi(str.substr(0, m)), (unsigned int)stoi(str.substr(m + 1)));
                 rules[i][id] = f;
 //                if (i == 4 && id == 0)
 //                    cerr <<i << ' ' << id << ' '<< rules[i][id].first << ' ' << rules[i][id].second << endl;
@@ -99,55 +92,60 @@ void solve() {
         vector<string> words = get_words();
         for (int i = 0; i < D; i++) {
             const string &str = words[i];
-            unsigned int x = 0u;
 
             if (str.size() == 32) {
+                unsigned int x = 0u;
                 for (int i = 0; i < 32; i++) {
                     if (str[31 - i] == '1') {
                         x |= (1u << i);
                     }
                 }
+                keys[i][id] = {x, id};
             } else {
-                x = (unsigned int) stoi(str);
+                keys[i][id] = {(unsigned int)stoi(str), id};
             }
-            keys[i][id] = {x, id};
-            keys_orig[i][id] = x;
         }
     }
 
 
     for (int d = 0; d < D; d++) {
         sort(keys[d], keys[d] + K);
+        for (int i = 0; i < K; i++) {
+            dp[d][i + 1] = dp[d][i];
+            dp[d][i + 1].set(keys[d][i].second);
+        }
     }
+    for (int i = 0; i < K; i++) unmatched.set(i, true);
 
 //    int shit = 60655;
     int shit = -1;
 //    cerr << rules[4][shit].first << ' ' << rules[4][shit].second << endl ;
 
+    vector<int> intervals;
     long long sum = 0;
     for (int r = 0; r < R; r++) {
-        int best_lo = -1;
-        int best_rg = 1e9;
-        int best_d = -1;
+        mask = unmatched;
+        int min_interval = 1e9;
         for (int d = 0; d < D; d++) {
 
             int lo = lower_bound(keys[d], keys[d] + K, make_pair(rules[d][r].first, (int) -1)) - keys[d];
-            int rg = lower_bound(keys[d], keys[d] + K, make_pair(rules[d][r].second, (int) 1e9)) - keys[d];
-            if (rg - lo < best_rg - best_lo) {
-                best_lo = lo;
-                best_rg = rg;
-                best_d = d;
+            int rg = lower_bound(keys[d], keys[d] + K, make_pair(rules[d][r].second, (int) 1e9)) - keys[d] ;
+            min_interval = min(min_interval, rg - lo);
+
+            mask &= dp[d][lo] ^ dp[d][rg];
+        }
+        intervals.push_back(min_interval);
+        sum+=min_interval;
+        if (r%15000==0) cerr << unmatched.count() << endl;
+        for (int i = 0; i < K; i++) {
+            if (mask.test(i)) {
+                result[i] = r;
+                unmatched.set(i, false);
             }
         }
-
-        for (int i = best_lo, d = best_d; i < best_rg; i++) {
-            int ind = keys[d][i].second;
-            if (result[ind] == -1 && rule_match(r, ind)) {
-                result[ind] = r;
-            }
-        }
-
     }
+    cerr << unmatched.count() << endl;
+    cerr << "STD = " << (double)sum/R << endl;
     for (int i = 0; i < K; i++) {
         cout << result[i] << endl;
     }
@@ -158,7 +156,6 @@ void solve() {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
 #ifdef LOCAL
     freopen("input_test.txt", "r", stdin);
     freopen("output_test.txt", "w", stdout);
