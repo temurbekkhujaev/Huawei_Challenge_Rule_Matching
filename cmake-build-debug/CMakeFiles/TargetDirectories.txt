@@ -1,0 +1,5 @@
+C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/cmake-build-debug/CMakeFiles/Main.dir
+C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/cmake-build-debug/CMakeFiles/BF.dir
+C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/cmake-build-debug/CMakeFiles/Check.dir
+C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/cmake-build-debug/CMakeFiles/rebuild_cache.dir

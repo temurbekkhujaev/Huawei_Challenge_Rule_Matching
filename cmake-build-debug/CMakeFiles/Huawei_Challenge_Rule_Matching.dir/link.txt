@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2021.2.3\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\Huawei_Challenge_Rule_Matching.dir/objects.a
+C:\PROGRA~1\CODEBL~1\MinGW\bin\ar.exe cr CMakeFiles\Huawei_Challenge_Rule_Matching.dir/objects.a @CMakeFiles\Huawei_Challenge_Rule_Matching.dir\objects1.rsp
+C:\PROGRA~1\CODEBL~1\MinGW\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\Huawei_Challenge_Rule_Matching.dir/objects.a -Wl,--no-whole-archive -o Huawei_Challenge_Rule_Matching.exe -Wl,--out-implib,libHuawei_Challenge_Rule_Matching.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Huawei_Challenge_Rule_Matching.dir\linklibs.rsp
