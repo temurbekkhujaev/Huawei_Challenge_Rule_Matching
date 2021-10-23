@@ -25,7 +25,7 @@ unsigned int keys_orig[MAX_DIM][MAX_KEYS];
 int result[MAX_KEYS];
 
 bool rule_match(int rule_id, int key_id) {
-    for (int i = 0; i < D; i++) {
+    for (int i = D - 1; i >= 0; i--) {
         if (rules[i][rule_id].first > keys_orig[i][key_id] || rules[i][rule_id].second < keys_orig[i][key_id])
             return false;
     }
