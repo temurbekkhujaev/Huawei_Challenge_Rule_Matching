@@ -36,34 +36,6 @@ int result[MAX_KEYS];
 int RULE_TYPE[MAX_TOT_DIM];
 Uint shift[BITS_SIZE]; // precalced binary shifts
 
-bool rule_match(int rule_id, int key_id) {
-    for (int i = 0; i < D_mask; i++) {
-        if (rules_mask[i][rule_id].first > keys_mask_orig[i][key_id] ||
-            rules_mask[i][rule_id].second < keys_mask_orig[i][key_id])
-            return false;
-    }
-    for (int i = 0; i < D_range; i++) {
-        if (rules_range[i][rule_id].first > keys_range_orig[i][key_id] ||
-            rules_range[i][rule_id].second < keys_range_orig[i][key_id])
-            return false;
-    }
-    return true;
-}
-
-
-#include <cstdio>
-
-/** Interface */
-
-inline char readChar();
-
-template<class T = int>
-inline T readInt();
-
-template<class T>
-inline void writeInt(T x, char end = 0);
-
-inline void writeChar(int x);
 
 /** Read */
 
@@ -77,48 +49,6 @@ inline char getChar() {
     if (pos == len)
         return -1;
     return buf[pos++];
-}
-
-inline char readChar() {
-    char c = getChar();
-    while (c <= 32)
-        c = getChar();
-    return c;
-}
-
-template<class T>
-inline T readInt() {
-    char c = readChar();
-    T x = 0;
-    while ('0' <= c && c <= '9')
-        x = x * 10 + c - '0', c = getChar();
-    return x;
-}
-
-/** Write */
-
-static int write_pos = 0;
-static char write_buf[buf_size];
-
-inline void writeChar(int x) {
-    if (write_pos == buf_size)
-        fwrite(write_buf, 1, buf_size, stdout), write_pos = 0;
-    write_buf[write_pos++] = x;
-}
-
-template<class T>
-inline void writeInt(T x, char end) {
-    if (x < 0)
-        writeChar('-'), x = -x;
-
-    char s[24];
-    int n = 0;
-    while (x || !n)
-        s[n++] = '0' + x % 10, x /= 10;
-    while (n--)
-        writeChar(s[n]);
-    if (end)
-        writeChar(end);
 }
 
 char buff[50];
@@ -193,6 +123,35 @@ void read_data_key() {
 
 }
 
+inline char readChar() {
+    char c = getChar();
+    while (c <= 32)
+        c = getChar();
+    return c;
+}
+
+int readInt() {
+    char c = readChar();
+    int x = 0;
+    while ('0' <= c && c <= '9')
+        x = x * 10 + c - '0', c = getChar();
+    return x;
+}
+
+bool rule_match(int rule_id, int key_id) {
+    for (int i = 0; i < D_mask; i++) {
+        if (rules_mask[i][rule_id].first > keys_mask_orig[i][key_id] ||
+            rules_mask[i][rule_id].second < keys_mask_orig[i][key_id])
+            return false;
+    }
+    for (int i = 0; i < D_range; i++) {
+        if (rules_range[i][rule_id].first > keys_range_orig[i][key_id] ||
+            rules_range[i][rule_id].second < keys_range_orig[i][key_id])
+            return false;
+    }
+    return true;
+}
+
 
 void solve() {
 
@@ -202,6 +161,7 @@ void solve() {
     for (unsigned int i{}; i < 32u; i++) shift[i] = 1u << i;
 
     R = readInt();
+
     for (int id = 0; id < R; id++) {
         if (id == 0) {
             end_line_flag = false;
@@ -248,12 +208,10 @@ void solve() {
                 keys_range[range_ptr][id] = make_pair(minx_range, id);
                 keys_range_orig[range_ptr][id] = minx_range;
                 range_ptr++;
-//                cerr << minx_range << ' ';
             } else {
                 keys_mask[mask_ptr][id] = make_pair(minx_mask, id);
                 keys_mask_orig[mask_ptr][id] = minx_mask;
                 mask_ptr++;
-//                cerr << minx_mask << ' ';
             }
         }
     }
@@ -308,7 +266,6 @@ void solve() {
             }
         }
         tot_calc += best_rg - best_lo;
-
         for (int i = best_lo; i < best_rg; i++) {
             int ind;
             if (MASK_BETTER) {
@@ -323,8 +280,7 @@ void solve() {
     }
 
     for (int i = 0; i < K; i++) {
-//        printf("%d\n", result[i]);
-        writeInt(result[i], '\n');
+        printf("%d\n", result[i]);
     }
 
 }

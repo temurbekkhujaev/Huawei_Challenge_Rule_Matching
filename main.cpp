@@ -1,20 +1,9 @@
+//
+// Created by temur on 10/24/2021.
+//
 #pragma GCC optimize("Ofast")
 
 #include <bits/stdc++.h>
-
-
-#ifndef LOCAL
-#undef USE_BENCHMARK
-#define benchmarkStart(a)
-#define benchmarkStop(a)
-#endif
-
-//#ifdef LOCAL
-//#define USE_BENCHMARK
-//
-//#include "benchmark.hpp"
-//
-//#endif
 
 using namespace std;
 
@@ -207,16 +196,8 @@ void read_data_key() {
 
 void solve() {
 
-#ifdef USE_BENCHMARK
-    benchmarkStart("Solution (Input)");
-#endif
-#ifdef LOCAL
     freopen("input_test.txt", "r", stdin);
     freopen("output_test.txt", "w", stdout);
-#else
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
 
     for (unsigned int i{}; i < 32u; i++) shift[i] = 1u << i;
 
@@ -254,24 +235,8 @@ void solve() {
         }
     }
 
-#ifdef USE_BENCHMARK
-    benchmarkStart("Solution (Input) (Rules)");
-#endif
-
-
-#ifdef USE_BENCHMARK
-    benchmarkStop("Solution (Input) (Rules)");
-#endif
-
     K = readInt();
 
-#ifdef LOCAL
-    cerr << "R,K,D_mask, D_range " << R << ' ' << K << ' ' << D_mask << ' ' << D_range << endl;
-#endif
-
-#ifdef USE_BENCHMARK
-    benchmarkStop("Solution (Input) (Keys)");
-#endif
     for (int id = 0; id < K; id++) {
         result[id] = -1;
         int range_ptr = 0;
@@ -292,13 +257,6 @@ void solve() {
             }
         }
     }
-#ifdef USE_BENCHMARK
-    benchmarkStop("Solution (Input) (Keys)");
-    benchmarkStop("Solution (Input)");
-
-    benchmarkStart("Solution (main)");
-    benchmarkStart("Solution (main) (preproc)");
-#endif
 
     for (int d = 0; d < D_mask; d++) {
         sort(keys_mask[d], keys_mask[d] + K);
@@ -315,10 +273,7 @@ void solve() {
         }
         fill(first_occ[d] + j, first_occ[d] + MAX_RANGE_LIM + 1, K);
     }
-#ifdef USE_BENCHMARK
-    benchmarkStop("Solution (main) (preproc)");
-    benchmarkStart("Solution (main) (search)");
-#endif
+
     vector<int> intervals;
     int tot_calc = 0;
     for (int r = 0; r < R; r++) {
@@ -367,42 +322,15 @@ void solve() {
         }
     }
 
-#ifdef USE_BENCHMARK
-    benchmarkStop("Solution (main) (search)");
-    benchmarkStop("Solution (main)");
-    benchmarkStart("Solution (output)");
-#endif
-
     for (int i = 0; i < K; i++) {
-//        printf("%d\n", result[i]);
-        writeInt(result[i], '\n');
+        printf("%d\n", result[i]);
+//        writeInt(result[i], '\n');
     }
 
-#ifdef USE_BENCHMARK
-    benchmarkStop("Solution (output)");
-#endif
-
-#ifdef LOCAL
-    cerr << "Average matching = " << (double) tot_calc / R << endl;
-#endif
 }
 
 
 int main() {
-
-#ifdef USE_BENCHMARK
-    benchmarkStart("Solution");
-#endif
-
     solve();
-
-#ifdef USE_BENCHMARK
-    benchmarkStop("Solution");
-#endif
-
-#ifdef USE_BENCHMARK
-    std::cerr << benchmarkLog(true) << std::endl;
-#endif
-
     return 0;
 }
