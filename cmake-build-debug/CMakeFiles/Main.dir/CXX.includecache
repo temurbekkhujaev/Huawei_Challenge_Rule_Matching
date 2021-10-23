@@ -9,8 +9,6 @@
 C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/main.cpp
 bits/stdc++.h
 -
-windows.h
-C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/windows.h
-psapi.h
-C:/Users/temur/repos/Huawei-Challenge-Rule-Matching/psapi.h
+cstdio
+-
 
