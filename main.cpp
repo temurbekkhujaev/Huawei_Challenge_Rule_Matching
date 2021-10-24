@@ -1,9 +1,21 @@
-//
-// Created by temur on 10/24/2021.
-//
 #pragma GCC optimize("Ofast")
 
 #include <bits/stdc++.h>
+
+//#define LOCAL
+
+#ifndef LOCAL
+#undef USE_BENCHMARK
+#define benchmarkStart(a)
+#define benchmarkStop(a)
+#endif
+
+#ifdef LOCAL
+#define USE_BENCHMARK
+
+#include "benchmark.hpp"
+
+#endif
 
 using namespace std;
 
@@ -34,9 +46,9 @@ Mint keys_range_orig[MAX_DIM_RANGE][MAX_KEYS];
 
 int result[MAX_KEYS];
 int RULE_TYPE[MAX_TOT_DIM];
-Uint shift[BITS_SIZE]; // precalced binary shifts
+std::uint32_t shift[BITS_SIZE]; // precalced binary shifts
 
-bool rule_match(int rule_id, int key_id) {
+inline bool rule_match(int rule_id, int key_id) {
     for (int i = 0; i < D_mask; i++) {
         if (rules_mask[i][rule_id].first > keys_mask_orig[i][key_id] ||
             rules_mask[i][rule_id].second < keys_mask_orig[i][key_id])
@@ -65,9 +77,11 @@ inline void writeInt(T x, char end = 0);
 
 inline void writeChar(int x);
 
+inline void writeWord(const char *s);
+
 /** Read */
 
-static constexpr int buf_size = 32 * 4096;
+static constexpr int buf_size = 1 << 16;
 
 inline char getChar() {
     static char buf[buf_size];
@@ -121,143 +135,116 @@ inline void writeInt(T x, char end) {
         writeChar(end);
 }
 
-char buff[50];
-
-Uint minx_mask;
-Uint maxx_mask;
-Mint minx_range;
-Mint maxx_range;
-bool range_flag;
-bool end_line_flag;
-
-void read_data_range() {
-    int len = 0;
-    do {
-        char c = getChar();
-        if (c == ' ') {
-            end_line_flag = false;
-            break;
-        }
-        if (c == '\n') {
-            end_line_flag = true;
-            break;
-        }
-        buff[len++] = c;
-    } while (true);
-    range_flag = (len < 32);
-
-    if (range_flag) {
-        int i = 0;
-        int number1 = 0, number2 = 0;
-        for (; buff[i] != '-'; i++) number1 = number1 * 10 + buff[i] - '0';
-        i++;
-        for (; i < len; i++) number2 = number2 * 10 + buff[i] - '0';
-        minx_range = (Mint) number1;
-        maxx_range = (Mint) number2;
-    } else {
-        minx_mask = 0;
-        maxx_mask = 0;
-        for (int i = 0; i < 32; i++) {
-            if (buff[31 - i] == '*') {
-                maxx_mask |= shift[i];
-            } else if (buff[31 - i] == '1') {
-                minx_mask |= shift[i];
-                maxx_mask |= shift[i];
-            }
-        }
-    }
+inline void writeWord(const char *s) {
+    while (*s)
+        writeChar(*s++);
 }
 
-
-void read_data_key() {
-    int len = 0;
-
-    do {
-        char c = getChar();
-        if (c == ' ' || c == '\n') break;
-        buff[len++] = c;
-    } while (true);
-
-    if (range_flag) {
-        int i = 0, number2 = 0;
-        for (; i < len; i++) number2 = number2 * 10 + buff[i] - '0';
-        minx_range = (Mint) number2;
-    } else {
-        minx_mask = 0;
-        for (int i = 0; i < 32; i++) {
-            if (buff[31 - i] == '1') {
-                minx_mask |= shift[i];
-            }
-        }
+struct Flusher {
+    ~Flusher() {
+        if (write_pos)
+            fwrite(write_buf, 1, write_pos, stdout), write_pos = 0;
     }
-
-}
+} flusher;
 
 
 void solve() {
 
-    freopen("input_test.txt", "r", stdin);
-    freopen("output_test.txt", "w", stdout);
+
+    benchmarkStart("Solution (Input)");
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
 
     for (unsigned int i{}; i < 32u; i++) shift[i] = 1u << i;
 
     R = readInt();
-    for (int id = 0; id < R; id++) {
-        if (id == 0) {
-            end_line_flag = false;
-            do {
-                read_data_range();
-                if (range_flag) {
-                    rules_range[D_range][id] = make_pair(minx_range, maxx_range);
-                    D_range++;
-                } else {
-                    rules_mask[D_mask][id] = make_pair(minx_mask, maxx_mask);
-                    D_mask++;
-                }
 
-                RULE_TYPE[D] = range_flag;
-                D++;
-            } while (!end_line_flag);
-        } else {
-            int range_ptr = 0;
-            int mask_ptr = 0;
-            for (int i = 0; i < D; i++) {
-                range_flag = RULE_TYPE[i];
-                read_data_range();
-                if (RULE_TYPE[i]) { //range
-                    rules_range[range_ptr][id] = make_pair(minx_range, maxx_range);
-                    range_ptr++;
-                } else {
-                    rules_mask[mask_ptr][id] = make_pair(minx_mask, maxx_mask);
-                    mask_ptr++;
-                }
+    D_mask = 2;
+    D_range = 3;
+    D = 5;
+    RULE_TYPE[0] = RULE_TYPE[1] = 0;
+    RULE_TYPE[2] = RULE_TYPE[3] = RULE_TYPE[4] = 1;
+
+    benchmarkStart("Solution (Input) (Rules)");
+    for (int id = 0; id < R; id++) {
+
+        char c;
+        rules_mask[0][id].first = rules_mask[0][id].second = 0;
+        for (int i{}; i < 32; i++) {
+            c = readChar();
+            if (c == '*') {
+                rules_mask[0][id].second |= shift[31 - i];
+            } else if (c == '1') {
+                rules_mask[0][id].first |= shift[31 - i];
+                rules_mask[0][id].second |= shift[31 - i];
             }
         }
+
+        auto &x = rules_mask[0][id];
+        rules_mask[1][id].first = rules_mask[1][id].second = 0;
+        for (int i{}; i < 32; i++) {
+            c = readChar();
+            if (c == '*') {
+                rules_mask[1][id].second |= shift[31 - i];
+            } else if (c == '1') {
+                rules_mask[1][id].first |= shift[31 - i];
+                rules_mask[1][id].second |= shift[31 - i];
+            }
+        }
+
+        rules_range[0][id].first = readInt();
+        rules_range[0][id].second = readInt();
+        rules_range[1][id].first = readInt();
+        rules_range[1][id].second = readInt();
+        rules_range[2][id].first = readInt();
+        rules_range[2][id].second = readInt();
     }
-
+    benchmarkStop("Solution (Input) (Rules)");
     K = readInt();
+#ifdef LOCAL
+    cerr << "R,K,D_mask, D_range " << R << ' ' << K << ' ' << D_mask << ' ' << D_range << endl;
+#endif
 
+    benchmarkStart("Solution (Input) (Keys)");
     for (int id = 0; id < K; id++) {
         result[id] = -1;
-        int range_ptr = 0;
-        int mask_ptr = 0;
-        for (int i = 0; i < D; i++) {
-            range_flag = RULE_TYPE[i];
-            read_data_key();
-            if (RULE_TYPE[i]) { //range
-                keys_range[range_ptr][id] = make_pair(minx_range, id);
-                keys_range_orig[range_ptr][id] = minx_range;
-                range_ptr++;
-//                cerr << minx_range << ' ';
-            } else {
-                keys_mask[mask_ptr][id] = make_pair(minx_mask, id);
-                keys_mask_orig[mask_ptr][id] = minx_mask;
-                mask_ptr++;
-//                cerr << minx_mask << ' ';
+
+        unsigned int a{}, b{}, c, d, e;
+
+        for (int i{}; i < 32; i++) {
+            if (readChar() == '1') {
+                a |= (1u << (31 - i));
             }
         }
-    }
 
+        for (int i{}; i < 32; i++) {
+            if (readChar() == '1') {
+                b |= (1u << (31 - i));
+            }
+        }
+
+        c = readInt();
+        d = readInt();
+        e = readInt();
+
+        keys_range[0][id] = {c, id};
+        keys_range_orig[0][id] = c;
+        keys_range[1][id] = {d, id};
+        keys_range_orig[1][id] = d;
+        keys_range[2][id] = {e, id};
+        keys_range_orig[2][id] = e;
+
+        keys_mask[0][id] = {a, id};
+        keys_mask_orig[0][id] = a;
+        keys_mask[1][id] = {b, id};
+        keys_mask_orig[1][id] = b;
+    }
+    benchmarkStop("Solution (Input) (Keys)");
+    benchmarkStop("Solution (Input)");
+
+    benchmarkStart("Solution (main)");
+    benchmarkStart("Solution (main) (preproc)");
     for (int d = 0; d < D_mask; d++) {
         sort(keys_mask[d], keys_mask[d] + K);
     }
@@ -273,7 +260,9 @@ void solve() {
         }
         fill(first_occ[d] + j, first_occ[d] + MAX_RANGE_LIM + 1, K);
     }
+    benchmarkStop("Solution (main) (preproc)");
 
+    benchmarkStart("Solution (main) (search)");
     vector<int> intervals;
     int tot_calc = 0;
     for (int r = 0; r < R; r++) {
@@ -321,16 +310,31 @@ void solve() {
             }
         }
     }
+    benchmarkStop("Solution (main) (search)");
+    benchmarkStop("Solution (main)");
 
+    benchmarkStart("Solution (output)");
     for (int i = 0; i < K; i++) {
-        printf("%d\n", result[i]);
-//        writeInt(result[i], '\n');
+        writeInt(result[i], '\n');
     }
 
+    benchmarkStop("Solution (output)");
+
+#ifdef LOCAL
+    cerr << "Average matching = " << (double) tot_calc / R << endl;
+#endif
 }
 
 
 int main() {
+
+    benchmarkStart("Solution");
     solve();
+    benchmarkStop("Solution");
+
+#ifdef LOCAL
+    std::cerr << benchmarkLog(true) << std::endl;
+#endif
+
     return 0;
 }
